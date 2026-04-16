@@ -1,36 +1,28 @@
 import streamlit as st
 import numpy as np
 import joblib
-import streamlit.components.v1 as components
-import plotly.graph_objects as go
 
-st.set_page_config(page_title="Pro House Price Predictor", layout="wide")
-
-st.title("🏠 Smart Real Estate Dashboard")
-st.markdown("---")
-
-st.set_page_config(page_title="Pro House Price Predictor", layout="wide")
-
-st.title("🏠 Smart Real Estate Dashboard")
-st.markdown("---")
-
-components.html(""" YOUR FULL HTML CODE """, height=420)
-
-# Load model
 model = joblib.load("Random_search.pkl")
+print(model)
+st.title("House Price Prediction")
+st.markdown("---")
+bedroom = st.number_input("Enter the number of bedroom",min_value=0, value=0)
 
-col1, col2 = st.columns(2)
+bathroom = st.number_input("Enter the number of bathroom",min_value=0, value=0)
 
-with col1:
-    st.subheader("📥 Property Details")
+living_area = st.number_input("Enter the living area",min_value=0, value=2000)
 
-    bedroom = st.number_input("Bedrooms", 0, 10, 2)
-    bathroom = st.number_input("Bathrooms", 0, 10, 2)
-    living_area = st.number_input("Living Area", 500, 10000, 2000)
-    condition = st.slider("Condition", 1, 5, 3)
-    school = st.number_input("Nearby Schools", 0, 10, 2)
+condition_of_house=st.number_input("Condition of house",min_value=0, value=3)
 
-    if st.button("Predict"):
-        x = np.array([[bedroom, bathroom, living_area, condition, school]])
-        price = int(model.predict(x)[0])
-        st.success(f"💰 Price: ₹ {price:,}")
+school = st.number_input("School",min_value=0,value=0)
+
+x=[[bedroom,bathroom,living_area,condition_of_house,school]]
+
+pred =st.button("Predict")
+
+if pred==True:
+    np_array=np.array(x)
+    price=int(model.predict(np_array)[0])
+    st.write(f"House price={price}")
+else:
+    st.write("Please click")
